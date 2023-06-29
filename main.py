@@ -78,7 +78,7 @@ pai = {"e1b": "",
 
 
 def obter_distancia_estimada(no1, no2) -> float:
-    distancia = dist_real[no1][no2] + dist_direta[no1[:-1]][no2[:-1]]
+    distancia = dist_real[no1][no2] + dist_direta[no2[:-1]][no_final[:-1]]
     return distancia
 
 
@@ -93,13 +93,22 @@ def expandir_fronteira(fronteira):
     fronteira = fronteira[1:]
     return fronteira
 
+def get_sequencia(pai, nextstr):
+    lista_final = []
+    lista_final.append(nextstr)
+
+    while nextstr != "":
+        lista_final.append(pai[nextstr])    
+        nextstr = pai[nextstr]
+    
+    return lista_final[-2::-1]
 
 fim = False
 visitados = []
 no_inicial = input("Digite a estação de origem: ")
 no_final = input("Digite a estação de destino: ")
 fronteira = [(no_inicial, 0)]
-print(fronteira)
+#print(fronteira)
 
 
 while not fim:
@@ -110,5 +119,7 @@ while not fim:
         fronteira = sorted(fronteira, key=lambda x: x[1])
         print(fronteira)
 
-for no_filho, no_pai in pai.items():
-    print(no_filho, 'é filho de', no_pai)
+#for no_filho, no_pai in pai.items():
+#    print(no_filho, "é filho de", no_pai)
+
+print(f"A sequência para alcançar mais rapidamente seu destino é: {get_sequencia(pai, no_final)}, com um custo de {fronteira[0][1]:.1f} minutos!")

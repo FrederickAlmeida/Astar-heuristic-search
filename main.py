@@ -87,28 +87,30 @@ def expandir_fronteira(fronteira):
     for estacao in dist_real[fronteira[0][0]].keys():
         if estacao not in visitados:
             pai[estacao] = fronteira[0][0]
-            novo_no = (estacao, fronteira[0][1] + obter_distancia_estimada(fronteira[0][0], estacao))
+            novo_no = (estacao, fronteira[0][1] + dist_real[fronteira[0][0]][estacao])
             fronteira.append(novo_no)
 
     fronteira = fronteira[1:]
     return fronteira
+
 
 def get_sequencia(pai, nextstr):
     lista_final = []
     lista_final.append(nextstr)
 
     while nextstr != "":
-        lista_final.append(pai[nextstr])    
+        lista_final.append(pai[nextstr])
         nextstr = pai[nextstr]
-    
+
     return lista_final[-2::-1]
+
 
 fim = False
 visitados = []
 no_inicial = input("Digite a estação de origem: ")
 no_final = input("Digite a estação de destino: ")
 fronteira = [(no_inicial, 0)]
-#print(fronteira)
+# print(fronteira)
 
 
 while not fim:
@@ -116,10 +118,12 @@ while not fim:
         fim = True
     else:
         fronteira = expandir_fronteira(fronteira)
-        fronteira = sorted(fronteira, key=lambda x: x[1])
-        print(fronteira)
+        fronteira = sorted(fronteira, key=lambda x: x[1] + dist_direta[x[0][:-1]][no_final[:-1]])
+        fronteira_heuristica = [(estacao[0], estacao[1] + dist_direta[estacao[0][:-1]][no_final[:-1]]) for estacao in fronteira]
+        print(fronteira_heuristica)
 
-#for no_filho, no_pai in pai.items():
+# for no_filho, no_pai in pai.items():
 #    print(no_filho, "é filho de", no_pai)
 
-print(f"A sequência para alcançar mais rapidamente seu destino é: {get_sequencia(pai, no_final)}, com um custo de {fronteira[0][1]:.1f} minutos!")
+print(
+    f"A sequência para alcançar mais rapidamente seu destino é: {get_sequencia(pai, no_final)}, com um custo de {fronteira[0][1]:.1f} minutos!")

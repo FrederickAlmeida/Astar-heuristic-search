@@ -117,14 +117,13 @@ fronteira = [(no_inicial, 0)]
 while not fim:
     if fronteira[0][0] == no_final:
         fim = True
+        fronteira_heuristica = [(estacao[0], estacao[1] + dist_direta[estacao[0][:-1]][no_final[:-1]]) for estacao in fronteira]
+        print(fronteira_heuristica)
     else:
-        fronteira = expandir_fronteira(fronteira)
         fronteira = sorted(fronteira, key=lambda x: x[1] + dist_direta[x[0][:-1]][no_final[:-1]])
         fronteira_heuristica = [(estacao[0], estacao[1] + dist_direta[estacao[0][:-1]][no_final[:-1]]) for estacao in fronteira]
         print(fronteira_heuristica)
-
-#for no_filho, no_pai in pai.items():
-   #print(no_filho, "é filho de", no_pai)
+        fronteira = expandir_fronteira(fronteira)
 
 print(
     f"A sequência para alcançar mais rapidamente seu destino é: {get_sequencia(pai, no_final)}, com um custo de {fronteira[0][1]:.1f} minutos!")

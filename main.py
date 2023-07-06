@@ -111,22 +111,18 @@ visitados = []
 no_inicial = input("Digite a estação de origem: ")
 no_final = input("Digite a estação de destino: ")
 fronteira = [(no_inicial, 0)]
-# print(fronteira)
 
 
 while not fim:
     if fronteira[0][0] == no_final:
         fim = True
-        fronteira_heuristica = [(estacao[0], estacao[1] + dist_direta[estacao[0][:-1]][no_final[:-1]]) for estacao in fronteira]
+        fronteira_heuristica = [(estacao[0], round((estacao[1] + dist_direta[estacao[0][:-1]][no_final[:-1]]), 2)) for estacao in fronteira]
         print(fronteira_heuristica)
     else:
-        fronteira_heuristica = [(estacao[0], estacao[1] + dist_direta[estacao[0][:-1]][no_final[:-1]]) for estacao in fronteira]
+        fronteira_heuristica = [(estacao[0], round((estacao[1] + dist_direta[estacao[0][:-1]][no_final[:-1]]), 2)) for estacao in fronteira]
         print(fronteira_heuristica)
         fronteira = expandir_fronteira(fronteira)
         fronteira = sorted(fronteira, key=lambda x: x[1] + dist_direta[x[0][:-1]][no_final[:-1]])
-
-print(
-    f"A sequência para alcançar mais rapidamente seu destino é: {get_sequencia(pai, no_final)}, com um custo de {fronteira[0][1]:.1f} minutos!")
 
 print(
     f"A sequência para alcançar mais rapidamente seu destino é: {get_sequencia(pai, no_final)}, com um custo de {fronteira[0][1]:.1f} minutos!")
